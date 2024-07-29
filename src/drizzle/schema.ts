@@ -2,7 +2,7 @@ import {  serial, text,varchar,pgEnum, timestamp, integer, boolean, pgTable } fr
 
 // users table
 export const users = pgTable("users", {
-    id: serial("id").primaryKey(),
+    user_id: serial("user_id").primaryKey(),
     username: varchar("name", { length: 255 }).notNull(),
     email: varchar("email").unique().notNull(),
     password: varchar("password", { length: 100 }).notNull(),
@@ -16,9 +16,9 @@ export const users = pgTable("users", {
 export const status = pgEnum("status", ["todo", "doing", "done"]);
 // projects table
 export const projects = pgTable("projects", {
-    id: serial("id").primaryKey(),
-    user_id: integer("user_id").notNull().references(() => users.id),
-    name: varchar("name", { length: 255 }).notNull(),
+    projects_id: serial("projects_id").primaryKey(),
+    user_id: integer("user_id").notNull().references(() => users.user_id, { onDelete: "cascade" }),
+    project_name: varchar("project_name", { length: 255 }).notNull(),
     description: varchar("description", { length: 2550 }).notNull(),
     githubRepo: text ("githubRepo"),
     start_date: timestamp("start_date"),
@@ -31,8 +31,8 @@ export const projects = pgTable("projects", {
   // tasks
 export const tasks = pgTable("tasks", {
     id: serial("id").primaryKey(),
-    project_id: integer("project_id").notNull().references(() => projects.id),
-    name: varchar("name", { length: 255 }).notNull(),
+    project_id: integer("project_id").notNull().references(() => projects.projects_id, { onDelete: "cascade" }),
+    task_name: varchar("task_name", { length: 255 }).notNull(),
     description: text("description"),
     due_date: timestamp("due_date"),
     completed: boolean("completed").default(false),
@@ -43,8 +43,8 @@ export const tasks = pgTable("tasks", {
 
 export const WorkLogs = pgTable("work_logs", {
   id: serial("id").primaryKey(),
-  project_id: integer("project_id").notNull().references(() => projects.id),
-  user_id: integer("user_id").notNull().references(() => users.id),
+  project_id: integer("project_id").notNull().references(() => projects.projects_id, { onDelete: "cascade" }),
+  user_id: integer("user_id").notNull().references(() => users.user_id, { onDelete: "cascade" }),
   log_date: timestamp("log_date").notNull(),
   time_spent: varchar("time_spent"),
   description: text("description"),
@@ -55,8 +55,8 @@ export const WorkLogs = pgTable("work_logs", {
 // Reminder
 export const Reminders = pgTable("reminders", {
   id: serial("id").primaryKey(),
-  user_id: integer("user_id").notNull().references(() => users.id),
-  project_id: integer("project_id").notNull().references(() => projects.id),
+  user_id: integer("user_id").notNull().references(() => users.user_id, { onDelete: "cascade" }),
+  project_id: integer("project_id").notNull().references(() => projects.projects_id, { onDelete: "cascade" }),
   remind_date: timestamp("remind_date").notNull(),
   message: text("message").notNull(),
   created_at: timestamp("created_at").defaultNow().notNull(),
@@ -66,8 +66,8 @@ export const Reminders = pgTable("reminders", {
 
 // project categories
 export const categories = pgTable ("categories", {
-  id: serial("id").primaryKey(),
-  project_id: integer("project_id").notNull().references(() => projects.id),
+  category_id: serial("category_id").primaryKey(),
+  project_id: integer("project_id").notNull().references(() => projects.projects_id, { onDelete: "cascade" }),
   name: varchar("name", { length: 255 }).notNull(),
   created_at: timestamp("created_at").defaultNow().notNull(),
   updated_at: timestamp("updated_at").defaultNow().notNull(),
@@ -76,8 +76,8 @@ export const categories = pgTable ("categories", {
 // projectCategoryAssignments
 export const projectCategoryAssignments = pgTable ("projectCategoryAssignments", {
   id: serial("id").primaryKey(),
-  project_id: integer("project_id").notNull().references(() => projects.id),
-  category_id: integer("category_id").notNull().references(() => categories.id),
+  project_id: integer("project_id").notNull().references(() => projects.projects_id, { onDelete: "cascade" }),
+  category_id: integer("category_id").notNull().references(() => categories.category_id, { onDelete: "cascade" }),
   created_at: timestamp("created_at").defaultNow().notNull(),
   updated_at: timestamp("updated_at").defaultNow().notNull(),
 })
