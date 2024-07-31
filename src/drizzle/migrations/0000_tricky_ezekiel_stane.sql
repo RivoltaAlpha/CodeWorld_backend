@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS "projects" (
 	"project_name" varchar(255) NOT NULL,
 	"description" varchar(2550) NOT NULL,
 	"githubRepo" text,
-	"start_date" timestamp,
-	"end_date" timestamp,
+	"start_date" varchar(255),
+	"end_date" varchar(255),
 	"status" "status" DEFAULT 'todo' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS "tasks" (
 	"project_id" integer NOT NULL,
 	"task_name" varchar(255) NOT NULL,
 	"description" text,
-	"due_date" timestamp,
+	"due_date" varchar,
 	"completed" boolean DEFAULT false,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL

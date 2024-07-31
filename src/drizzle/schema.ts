@@ -20,20 +20,21 @@ export const users = pgTable("users", {
   }))
 
   //projects enum
-export const status = pgEnum("status", ["todo", "doing", "done"]);
-// projects table
-export const projects = pgTable("projects", {
-    projects_id: serial("projects_id").primaryKey(),
-    user_id: integer("user_id").notNull().references(() => users.user_id, { onDelete: "cascade" }),
-    project_name: varchar("project_name", { length: 255 }).notNull(),
-    description: varchar("description", { length: 2550 }).notNull(),
-    githubRepo: text ("githubRepo"),
-    start_date: timestamp("start_date"),
-    end_date: timestamp("end_date"),
-    status: status("status").default("todo").notNull(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().notNull(),
-  });
+  export const status = pgEnum("status", ["todo", "doing", "done"]);
+
+  // projects table
+  export const projects = pgTable("projects", {
+      projects_id: serial("projects_id").primaryKey(),
+      user_id: integer("user_id").notNull().references(() => users.user_id, { onDelete: "cascade" }),
+      project_name: varchar("project_name", { length: 255 }).notNull(),
+      description: varchar("description", { length: 2550 }).notNull(),
+      githubRepo: text ("githubRepo"),
+      start_date: varchar("start_date", { length: 255 }),
+      end_date: varchar("end_date", { length: 255 }),
+      status: status("status").default("todo").notNull(),
+      created_at: timestamp("created_at").defaultNow().notNull(),
+      updated_at: timestamp("updated_at").defaultNow().notNull(),
+    });
 
   // project relationships
   export const projectRelationsips = relations(projects, ({ many }) => ({
@@ -49,7 +50,7 @@ export const tasks = pgTable("tasks", {
     project_id: integer("project_id").notNull().references(() => projects.projects_id, { onDelete: "cascade" }),
     task_name: varchar("task_name", { length: 255 }).notNull(),
     description: text("description"),
-    due_date: timestamp("due_date"),
+    due_date: varchar("due_date"),
     completed: boolean("completed").default(false),
     created_at: timestamp("created_at").defaultNow().notNull(),
     updated_at: timestamp("updated_at").defaultNow().notNull(),

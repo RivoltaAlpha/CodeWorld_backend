@@ -1,5 +1,5 @@
 {
-  "id": "58e9a93b-fb70-45d6-984d-f3e1e08c3a77",
+  "id": "ab3095b6-d4b8-4589-bea2-7bdb0f7331f2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -333,13 +333,13 @@
         },
         "start_date": {
           "name": "start_date",
-          "type": "timestamp",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
         "end_date": {
           "name": "end_date",
-          "type": "timestamp",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
@@ -415,7 +415,7 @@
         },
         "due_date": {
           "name": "due_date",
-          "type": "timestamp",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
