@@ -7,6 +7,7 @@ import { timeout } from "hono/timeout";
 import { HTTPException } from "hono/http-exception";
 import "dotenv/config"
 import { projectRouter } from './projects/Prouter'
+import { userRouter } from './users/route';
 
 const app = new Hono()
 // inbuilt middlewares
@@ -40,7 +41,8 @@ app.get("/timeout", async (c) => {
 });
 
 // services routes
-app.route('/api', projectRouter)
+app.route('/', projectRouter)
+app.route('/', userRouter)
 
 const port = 3000
 

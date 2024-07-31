@@ -1,9 +1,10 @@
+import { relations } from "drizzle-orm";
 import {  serial, text,varchar,pgEnum, timestamp, integer, boolean, pgTable } from "drizzle-orm/pg-core";
 
 // users table
 export const users = pgTable("users", {
     user_id: serial("user_id").primaryKey(),
-    username: varchar("name", { length: 255 }).notNull(),
+    user_name: varchar("name", { length: 255 }).notNull(),
     email: varchar("email").unique().notNull(),
     password: varchar("password", { length: 100 }).notNull(),
     image_url: varchar('image_url', { length: 100 }),
@@ -11,6 +12,12 @@ export const users = pgTable("users", {
     updated_at: timestamp("updated_at").defaultNow().notNull(),
   });
 
+  // user relationships
+  export const userRelationsips = relations(users, ({ many }) => ({
+    reminders: many(Reminders),
+    projects: many(projects),
+    tasks: many(tasks),
+  }))
 
   //projects enum
 export const status = pgEnum("status", ["todo", "doing", "done"]);
@@ -28,6 +35,14 @@ export const projects = pgTable("projects", {
     updated_at: timestamp("updated_at").defaultNow().notNull(),
   });
 
+  // project relationships
+  export const projectRelationsips = relations(projects, ({ many }) => ({
+    reminders: many(Reminders),
+    tasks: many(tasks),
+    workLogs: many(WorkLogs),
+    projectCategoryAssignments: many(projectCategoryAssignments),
+  }))
+
   // tasks
 export const tasks = pgTable("tasks", {
     id: serial("id").primaryKey(),
@@ -40,6 +55,10 @@ export const tasks = pgTable("tasks", {
     updated_at: timestamp("updated_at").defaultNow().notNull(),
   })
 
+//task relationships
+export const taskRelationsips = relations(tasks, ({ many }) => ({
+  workLogs: many(WorkLogs),
+}))
 
 export const WorkLogs = pgTable("work_logs", {
   id: serial("id").primaryKey(),
@@ -52,6 +71,11 @@ export const WorkLogs = pgTable("work_logs", {
   updated_at: timestamp("updated_at").defaultNow().notNull(),
 })
 
+// logs relationships
+export const workLogRelationsips = relations(WorkLogs, ({ many }) => ({
+  reminders: many(Reminders),
+}))
+
 // Reminder
 export const Reminders = pgTable("reminders", {
   id: serial("id").primaryKey(),
@@ -63,6 +87,10 @@ export const Reminders = pgTable("reminders", {
   updated_at: timestamp("updated_at").defaultNow().notNull(),
 })
 
+// reminder relationships
+export const reminderRelationsips = relations(Reminders, ({ many }) => ({
+  workLogs: many(WorkLogs),
+}))
 
 // project categories
 export const categories = pgTable ("categories", {
@@ -72,6 +100,11 @@ export const categories = pgTable ("categories", {
   created_at: timestamp("created_at").defaultNow().notNull(),
   updated_at: timestamp("updated_at").defaultNow().notNull(),
 })
+
+// project category relationships
+export const projectCategoryRelationsips = relations(categories, ({ many }) => ({
+  projectCategoryAssignments: many(projectCategoryAssignments),
+}))
 
 // projectCategoryAssignments
 export const projectCategoryAssignments = pgTable ("projectCategoryAssignments", {
