@@ -13,6 +13,6 @@ projectRouter.get('/projects/:id', getProject);
 projectRouter.get('/projects-tasks/:id', async(c: Context) => getProjectsTasks (c));
 projectRouter.get('/projects-logs/:id', async(c: Context) => getTheProjectLogs (c));
 projectRouter.get('/projects/:user_id', async(c: Context) => getUserProjects (c));
-projectRouter.post('/projects', async(c: Context) => CreatingProject (c));
+projectRouter.post('/project', async(c: Context) => CreatingProject (c));
 projectRouter.put('/projects/:id', async(c: Context) => UpdatingProject(c));
 projectRouter.delete('/projects/:id', async(c: Context) => DeletingProject(c))
