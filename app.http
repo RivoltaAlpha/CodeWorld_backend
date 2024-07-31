@@ -1,0 +1,31 @@
+###
+POST  http://localhost:8000/user
+Content-Type: application/json
+
+{
+  "first_name": "John",
+  "last_name": "Williams",
+  "username": "johnw",
+  "password": "pass123word",
+  "email": "john.williams@example.com",
+  "contact_phone": "+1-567-890-1234",
+  "address": "890 Pine St, Nowhereville",
+  "role": "user",
+  "image_url": "https://th.bing.com/th?id=OIF.Dr%2f2Lx7%2bPcSggxMsUv06gQ&w=202&h=202&c=7&r=0&o=5&pid=1.7"
+}
+
+###
+POST  http://localhost:8000/project
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "project_name": "Code World",
+    "decription": "coding manager",
+    "githubRepo": "https://github.com/RivoltaAlpha/Codeworld_frontend",
+    "start_date": "",
+    "end_date": "",
+    "status": "todo"
+}
+
+
