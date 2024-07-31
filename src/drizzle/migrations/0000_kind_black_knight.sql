@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS "projects" (
 	"githubRepo" text,
 	"start_date" timestamp,
 	"end_date" timestamp,
-	"status" "status" NOT NULL,
+	"status" "status" DEFAULT 'todo' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );

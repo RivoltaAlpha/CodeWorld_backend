@@ -1,5 +1,5 @@
 {
-  "id": "74ee0323-da71-49b4-9eed-2670bc005f0b",
+  "id": "58e9a93b-fb70-45d6-984d-f3e1e08c3a77",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -348,7 +348,8 @@
           "type": "status",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'todo'"
         },
         "created_at": {
           "name": "created_at",
