@@ -23,7 +23,7 @@ export const projects = pgTable("projects", {
     githubRepo: text ("githubRepo"),
     start_date: timestamp("start_date"),
     end_date: timestamp("end_date"),
-    status: status("status").notNull(),
+    status: status("status").default("todo").notNull(),
     created_at: timestamp("created_at").defaultNow().notNull(),
     updated_at: timestamp("updated_at").defaultNow().notNull(),
   });
