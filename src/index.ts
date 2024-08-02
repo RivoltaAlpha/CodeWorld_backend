@@ -8,6 +8,7 @@ import { HTTPException } from "hono/http-exception";
 import "dotenv/config"
 import { projectRouter } from './projects/Prouter'
 import { userRouter } from './users/route';
+import { authRouter } from './authentication/routing'; 
 
 const app = new Hono()
 // inbuilt middlewares
@@ -43,6 +44,7 @@ app.get("/timeout", async (c) => {
 // services routes
 app.route('/', projectRouter)
 app.route('/', userRouter)
+app.route('/auth', authRouter)
 
 const port = 3000
 

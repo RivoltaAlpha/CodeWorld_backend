@@ -10,6 +10,28 @@ Content-Type: application/json
   "image_url": "https://th.bing.com/th?id=OIP.JL2FYRdlJkZl34uduf3h5QHaHa&w=202&h=202&c=7&r=0&o=5&pid=1.7"
 }
 
+###
+POST  http://localhost:8000/auth/register
+Content-Type: application/json
+
+{
+  "username": "Tyla",
+  "password": "password",
+  "email": "mwanikitiffany25@gmail.com",
+  "role": "user",
+  "image_url": "https://th.bing.com/th?id=OIP.JL2FYRdlJkZl34uduf3h5QHaHa&w=202&h=202&c=7&r=0&o=5&pid=1.7"
+}
+
+
+###
+POST  http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
+  "username": "Kimberly",
+  "password": "kimshy"
+}
+
 
 
 ###
