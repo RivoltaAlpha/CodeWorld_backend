@@ -4,10 +4,11 @@ import {  serial, text,varchar,pgEnum, timestamp, integer, boolean, pgTable } fr
 // users table
 export const users = pgTable("users", {
     user_id: serial("user_id").primaryKey(),
-    user_name: varchar("name", { length: 255 }).notNull(),
+    username: varchar("name", { length: 255 }).notNull(),
     email: varchar("email").unique().notNull(),
     password: varchar("password", { length: 100 }).notNull(),
     image_url: varchar('image_url', { length: 100 }),
+    role: varchar("role", { length: 255 }).default("user").notNull(),
     date_joined: timestamp("created_at").defaultNow().notNull(),
     updated_at: timestamp("updated_at").defaultNow().notNull(),
   });
