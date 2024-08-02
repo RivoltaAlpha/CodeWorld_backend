@@ -3,9 +3,10 @@ POST  http://localhost:8000/user
 Content-Type: application/json
 
 {
-  "user_name": "Olivia",
-  "password": "password789",
-  "email": "olivia.wilson@example.com",
+  "username": "Kimberly",
+  "password": "kimshy",
+  "email": "kimjay@gmail.com",
+  "role": "user",
   "image_url": "https://th.bing.com/th?id=OIP.JL2FYRdlJkZl34uduf3h5QHaHa&w=202&h=202&c=7&r=0&o=5&pid=1.7"
 }
 
