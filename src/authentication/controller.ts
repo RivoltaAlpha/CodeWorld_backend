@@ -1,10 +1,9 @@
 import { Context } from "hono";
 import "dotenv/config";
 import { authenticationService, loginAuthService } from "./service";
-import {hash} from "bcrypt";
+import {hash, compare } from "bcrypt";
 import { sign } from "hono/jwt";
 import { sendWelcomeEmail } from "../emailing/email";
-import { compare } from "bcrypt";
 
 export const registerUser = async (c: Context) => {
   try {
@@ -25,7 +24,7 @@ export const registerUser = async (c: Context) => {
       throw new Error("Email field is missing in the user data");
     }
 
-    const subject = "Welcome to Our Vehicle Rental Management System";
+    const subject = "Welcome to Code World! A world of developers for developers";
     const html = `
     <html>
       <head>
@@ -53,9 +52,8 @@ export const registerUser = async (c: Context) => {
       <body>
         <div class="email-container">
           <p>Hello, ${user.username}</p>
-          <p>Thank you for registering with our Vehicle Rental Management System!</p>
-          <p>Welcome to our system!</p>
-          <p>We help you manage your rentals.</p>
+          <p>Welcome to Code World!</p>
+          <p>Here we help you Manage your coding projects efficiently ensuring you remain Productive</p>
 
           <img src="https://wallpapercave.com/wp/wp2038248.jpg" alt="Image" style="max-width: 100%; height: auto;">
           <a class="btn" href="https://restaurantsapi1.azurewebsites.net/api">Visit our Website</a>
@@ -83,6 +81,7 @@ export const loginUser = async (c: Context) => {
 
     const isValid = await compare(user.password, foundUser?.password as string);
     console.log ("isValid:", isValid);
+
     if (!isValid) {
       return c.json({ error: "Invalid credentials😏" }, 401);
     } else {
@@ -94,9 +93,7 @@ export const loginUser = async (c: Context) => {
       };
       let secret = process.env.JWT_SECRET as string;
       const token = await sign(payload, secret);
-      let user = foundUser?.user;
-      let role = foundUser?.role;
-      return c.json({ token, user: { role, ...user } }, 200); // return token and user details
+      return c.json({ token, user: { role: foundUser?.role, username: foundUser?.username } }, 200); // return token and user details
     }
   } catch (error: any) {
     console.error('Error during login:', error);
