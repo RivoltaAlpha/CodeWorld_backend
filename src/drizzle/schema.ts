@@ -47,8 +47,9 @@ export const users = pgTable("users", {
 
   // tasks
 export const tasks = pgTable("tasks", {
-    id: serial("id").primaryKey(),
+    task_id: serial("id").primaryKey(),
     project_id: integer("project_id").notNull().references(() => projects.projects_id, { onDelete: "cascade" }),
+    user_id: integer("user_id").notNull().references(() => users.user_id, { onDelete: "cascade" }),
     task_name: varchar("task_name", { length: 255 }).notNull(),
     description: text("description"),
     due_date: varchar("due_date"),
@@ -130,8 +131,8 @@ export type TIUser = typeof users.$inferInsert;
 export type TSUser = typeof users.$inferSelect;
 export type TProject = typeof projects.$inferInsert;
 export type TProjectSelect = typeof projects.$inferSelect;
-export type TTask = typeof tasks.$inferInsert;
-export type TTaskSelect = typeof tasks.$inferSelect;
+export type TITask = typeof tasks.$inferInsert;
+export type TSTask = typeof tasks.$inferSelect;
 export type TWorkLog = typeof WorkLogs.$inferInsert;
 export type TWorkLogSelect = typeof WorkLogs.$inferSelect;
 export type TReminder = typeof Reminders.$inferInsert;
