@@ -22,19 +22,16 @@ export const loginAuthService = async (user:TSUser ) => {
     if (!foundUser) {
         throw new Error('User not found');
       }
-
     return foundUser;
   } catch (error) {
     console.error('Error logging in user:', error);
-    throw new Error('User login failed');
   }
 };
 
-export const authenticationService = async (user: TIUser) => {
+export const RegisteringService = async (user: TIUser) => {
   try {
     // Log received user data for debugging
     console.log('Registering user:', user);
-
     const hashedPassword = await hash(user.password, 10);
 
     // Insert user into `users` table

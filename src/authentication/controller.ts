@@ -1,9 +1,10 @@
 import { Context } from "hono";
 import "dotenv/config";
-import { authenticationService, loginAuthService } from "./service";
+import { RegisteringService, loginAuthService } from "./service";
 import {hash, compare } from "bcrypt";
-import { sign } from "hono/jwt";
+import { sign, verify } from "hono/jwt";
 import { sendWelcomeEmail } from "../emailing/email";
+import { publicDecrypt } from "crypto";
 
 export const registerUser = async (c: Context) => {
   try {
@@ -17,7 +18,7 @@ export const registerUser = async (c: Context) => {
     const hashedPassword = await hash(user.password, 10);
     user.password = hashedPassword;
 
-    const createdUser = await authenticationService(user);
+    const createdUser = await RegisteringService(user);
     if (!createdUser) return c.text("User not created😭😭", 404);
 
     if (!user.email) {
@@ -80,6 +81,7 @@ export const loginUser = async (c: Context) => {
     if (!foundUser) return c.text("User not found😏", 404);
 
     const isValid = await compare(user.password, foundUser?.password as string);
+    console.log ( foundUser?.password as string)
     console.log ("isValid:", isValid);
 
     if (!isValid) {
