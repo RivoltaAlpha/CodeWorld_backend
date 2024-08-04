@@ -1,4 +1,7 @@
 ###
+GET  http://localhost:8000/user/2
+
+###
 POST  http://localhost:8000/user
 Content-Type: application/json
 
@@ -15,13 +18,21 @@ POST  http://localhost:8000/auth/register
 Content-Type: application/json
 
 {
-  "username": "Tyla",
-  "password": "password",
-  "email": "mwanikitiffany25@gmail.com",
-  "role": "user",
+  "username": "Tiff",
+  "password": "Password1",
+  "email": "mwanikitiffany@gmail.com",
+  "role": "admin",
   "image_url": "https://th.bing.com/th?id=OIP.JL2FYRdlJkZl34uduf3h5QHaHa&w=202&h=202&c=7&r=0&o=5&pid=1.7"
 }
 
+###
+POST  http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
+  "username": "Tiff",
+  "password": "Password1"
+}
 
 ###
 POST  http://localhost:8000/auth/login
@@ -39,7 +50,7 @@ POST  http://localhost:8000/project
 Content-Type: application/json
 
     {
-        "user_id": 6,
+        "user_id": 1,
         "project_name": "EduPlatform",
         "description": "online education system",
         "githubRepo": "https://github.com/EduTech/EduPlatform_frontend",
@@ -48,3 +59,14 @@ Content-Type: application/json
     }
 
 
+###
+POST http://localhost:8000/project_id/task
+Content-Type: application/json
+
+    {
+      "project_id": 1,
+      "task_name": "Initialization",
+      "description": "Create Repo",
+      "due_date": "2024-05-25",
+      "completed": false
+    }
