@@ -49,7 +49,7 @@ export async function getAllUserProjects(userId: number){
             githubRepo: true,
             start_date: true,
             end_date: true,
-            status: true
+            project_status: true
         },
         with: {
             users: {
@@ -60,10 +60,10 @@ export async function getAllUserProjects(userId: number){
                     email: true
                 }
             },
-            work_logs: {
+            workLogs: {
                 columns: {
                     id: true,
-                    project_id: true,
+                    task_id: true,
                     user_id: true,
                     log_date: true,
                     time_spent: true
@@ -71,7 +71,7 @@ export async function getAllUserProjects(userId: number){
             },
             tasks: {
                 columns: {
-                    id: true,
+                    task_id: true,
                     project_id: true,
                     task_name: true,
                     description: true,
@@ -96,7 +96,7 @@ export const getProjectsByStatus = async (status: string) : Promise<TProject[]> 
     }
 
     const projects = await db.query.projects.findMany({
-        where: (fields, {eq}) => eq(fields.status, selectedStatus as any),
+        where: (fields, {eq}) => eq(fields.project_status, selectedStatus as any),
     });
     return projects
 }
@@ -107,7 +107,7 @@ export const getProjectTasks = async (project_id: number) : Promise<TProject[]> 
         with: {
             tasks: {
                 columns: {
-                    id: true,
+                    task_id: true,
                     project_id: true,
                     task_name: true,
                     description: true,
@@ -124,10 +124,10 @@ export const getProjectLogs = async (project_id: number) => {
     const projects = await db.query.projects.findMany({
         where: (fields, {eq}) => eq(fields.projects_id, project_id),
         with: {
-            work_logs: {
+            workLogs: {
                 columns: {
                     id: true,
-                    project_id: true,
+                    task_id: true,
                     user_id: true,
                     log_date: true,
                     time_spent: true
