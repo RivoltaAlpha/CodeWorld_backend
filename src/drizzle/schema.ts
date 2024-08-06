@@ -21,7 +21,7 @@ export const users = pgTable("users", {
   }))
 
   //projects enum
-  export const status = pgEnum("status", ["todo", "doing", "done"]);
+  export const project_status = pgEnum("status", ["todo", "doing", "done"]);
 
   // projects table
   export const projects = pgTable("projects", {
@@ -32,7 +32,7 @@ export const users = pgTable("users", {
       githubRepo: text ("githubRepo"),
       start_date: varchar("start_date", { length: 255 }),
       end_date: varchar("end_date", { length: 255 }),
-      status: status("status").default("todo").notNull(),
+      project_status: project_status("status").default("todo").notNull(),
       created_at: timestamp("created_at").defaultNow().notNull(),
       updated_at: timestamp("updated_at").defaultNow().notNull(),
     });
@@ -46,6 +46,8 @@ export const users = pgTable("users", {
   }))
 
   // tasks
+  export const task_status = pgEnum("status", ["new", "inProgress", "completed"]);
+
 export const tasks = pgTable("tasks", {
     task_id: serial("id").primaryKey(),
     project_id: integer("project_id").notNull().references(() => projects.projects_id, { onDelete: "cascade" }),
@@ -53,7 +55,9 @@ export const tasks = pgTable("tasks", {
     task_name: varchar("task_name", { length: 255 }).notNull(),
     description: text("description"),
     due_date: varchar("due_date"),
+    task_status: task_status("status").default("new").notNull(),
     completed: boolean("completed").default(false),
+    priority: integer("priority").notNull().default(0),
     created_at: timestamp("created_at").defaultNow().notNull(),
     updated_at: timestamp("updated_at").defaultNow().notNull(),
   })
@@ -65,7 +69,7 @@ export const taskRelationsips = relations(tasks, ({ many }) => ({
 
 export const WorkLogs = pgTable("work_logs", {
   id: serial("id").primaryKey(),
-  project_id: integer("project_id").notNull().references(() => projects.projects_id, { onDelete: "cascade" }),
+  task_id: integer("task_id").notNull().references(() => tasks.task_id, { onDelete: "cascade" }),
   user_id: integer("user_id").notNull().references(() => users.user_id, { onDelete: "cascade" }),
   log_date: timestamp("log_date").notNull(),
   time_spent: varchar("time_spent"),
@@ -93,6 +97,7 @@ export const Reminders = pgTable("reminders", {
 // reminder relationships
 export const reminderRelationsips = relations(Reminders, ({ many }) => ({
   workLogs: many(WorkLogs),
+  users: many(users),
 }))
 
 // project categories
