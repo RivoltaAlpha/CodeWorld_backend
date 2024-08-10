@@ -39,6 +39,7 @@ export const users = pgTable("users", {
 
   // project relationships
   export const projectRelationsips = relations(projects, ({ many }) => ({
+    users: many(users),
     reminders: many(Reminders),
     tasks: many(tasks),
     workLogs: many(WorkLogs),
