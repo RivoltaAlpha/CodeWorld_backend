@@ -78,10 +78,10 @@ export const loginUser = async (c: Context) => {
     console.log('Received user data for login:', user); // Debugging step
 
     const foundUser = await loginAuthService(user);
+    console.log ('found User Password', foundUser?.password);
     if (!foundUser) return c.text("User not found😏", 404);
 
     const isValid = await compare(user.password, foundUser?.password as string);
-    console.log ( foundUser?.password as string)
     console.log ("isValid:", isValid);
 
     if (!isValid) {
@@ -95,7 +95,7 @@ export const loginUser = async (c: Context) => {
       };
       let secret = process.env.JWT_SECRET as string;
       const token = await sign(payload, secret);
-      return c.json({ token, user: { role: foundUser?.role, username: foundUser?.username } }, 200); // return token and user details
+      return c.json({ token, user: {user_id: foundUser?.user_id, role: foundUser?.role, username: foundUser?.username } }, 200); // return token and user details
     }
   } catch (error: any) {
     console.error('Error during login:', error);
