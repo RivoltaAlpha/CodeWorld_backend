@@ -1,5 +1,11 @@
 DO $$ BEGIN
- CREATE TYPE "public"."status" AS ENUM('todo', 'doing', 'done');
+ CREATE TYPE "public"."project_status" AS ENUM('Todo', 'InProgress', 'Done');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."task_status" AS ENUM('New', 'InProgress', 'Completed');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -16,7 +22,7 @@ CREATE TABLE IF NOT EXISTS "reminders" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "work_logs" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"project_id" integer NOT NULL,
+	"task_id" integer NOT NULL,
 	"user_id" integer NOT NULL,
 	"log_date" timestamp NOT NULL,
 	"time_spent" varchar,
@@ -49,7 +55,7 @@ CREATE TABLE IF NOT EXISTS "projects" (
 	"githubRepo" text,
 	"start_date" varchar(255),
 	"end_date" varchar(255),
-	"status" "status" DEFAULT 'todo' NOT NULL,
+	" project_status" "project_status" DEFAULT 'Todo' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
@@ -57,10 +63,13 @@ CREATE TABLE IF NOT EXISTS "projects" (
 CREATE TABLE IF NOT EXISTS "tasks" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"project_id" integer NOT NULL,
+	"user_id" integer NOT NULL,
 	"task_name" varchar(255) NOT NULL,
 	"description" text,
 	"due_date" varchar,
+	"task_status" "task_status" DEFAULT 'New' NOT NULL,
 	"completed" boolean DEFAULT false,
+	"priority" integer DEFAULT 0 NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
@@ -90,7 +99,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "work_logs" ADD CONSTRAINT "work_logs_project_id_projects_projects_id_fk" FOREIGN KEY ("project_id") REFERENCES "public"."projects"("projects_id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "work_logs" ADD CONSTRAINT "work_logs_task_id_tasks_id_fk" FOREIGN KEY ("task_id") REFERENCES "public"."tasks"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -127,6 +136,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "tasks" ADD CONSTRAINT "tasks_project_id_projects_projects_id_fk" FOREIGN KEY ("project_id") REFERENCES "public"."projects"("projects_id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "tasks" ADD CONSTRAINT "tasks_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
