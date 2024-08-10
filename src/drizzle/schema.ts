@@ -21,7 +21,7 @@ export const users = pgTable("users", {
   }))
 
   //projects enum
-  export const project_status = pgEnum("status", ["todo", "doing", "done"]);
+  export const project_status = pgEnum("project_status", ["Todo", "InProgress", "Done"]);
 
   // projects table
   export const projects = pgTable("projects", {
@@ -32,7 +32,7 @@ export const users = pgTable("users", {
       githubRepo: text ("githubRepo"),
       start_date: varchar("start_date", { length: 255 }),
       end_date: varchar("end_date", { length: 255 }),
-      project_status: project_status("status").default("todo").notNull(),
+      project_status: project_status(" project_status").default("Todo").notNull(),
       created_at: timestamp("created_at").defaultNow().notNull(),
       updated_at: timestamp("updated_at").defaultNow().notNull(),
     });
@@ -47,7 +47,7 @@ export const users = pgTable("users", {
   }))
 
   // tasks
-  export const task_status = pgEnum("status", ["new", "inProgress", "completed"]);
+  export const task_status = pgEnum("task_status", ["New", "InProgress", "Completed"]);
 
 export const tasks = pgTable("tasks", {
     task_id: serial("id").primaryKey(),
@@ -56,7 +56,7 @@ export const tasks = pgTable("tasks", {
     task_name: varchar("task_name", { length: 255 }).notNull(),
     description: text("description"),
     due_date: varchar("due_date"),
-    task_status: task_status("status").default("new").notNull(),
+    task_status: task_status("task_status").default("New").notNull(),
     completed: boolean("completed").default(false),
     priority: integer("priority").notNull().default(0),
     created_at: timestamp("created_at").defaultNow().notNull(),
