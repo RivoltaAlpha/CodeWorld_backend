@@ -37,13 +37,17 @@ export async function deleteProject(id: number) {
     return deletedProject
   }
 
+  export async function getProjectByUserId(id: number) {
+    const project = await db.select().from(projects).where(eq(projects.user_id, id));
+    console.log('project', project)
+    return project
+  }
 
-export async function getAllUserProjects(userId: number){
+  export async function getAllUserProjects(userId: number) {
     return await db.query.projects.findMany({
-        where: (fields, {eq}) => eq(fields.user_id, userId),
+        where: (fields, { eq }) => eq(fields.user_id, userId),  // Correctly filtering by user_id
         columns: {
             projects_id: true,
-            user_id: true,
             project_name: true,
             description: true,
             githubRepo: true,
@@ -59,33 +63,15 @@ export async function getAllUserProjects(userId: number){
                     image_url: true,
                     email: true
                 }
-            },
-            workLogs: {
-                columns: {
-                    id: true,
-                    task_id: true,
-                    user_id: true,
-                    log_date: true,
-                    time_spent: true
-                }
-            },
-            tasks: {
-                columns: {
-                    task_id: true,
-                    project_id: true,
-                    task_name: true,
-                    description: true,
-                    due_date: true,
-                    completed: true
-                }
             }
         }
-    })
+    });
 }
+
 
 const field = {
     status: {
-        enumValues: ['todo', 'doing', 'done']
+        enumValues: ['Todo', 'InProgress', 'Done']
     }
 };
 export const getProjectsByStatus = async (status: string) : Promise<TProject[]> => {

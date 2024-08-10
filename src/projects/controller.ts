@@ -1,4 +1,4 @@
-import { getProjectById, getAllUserProjects, getProjectLogs,getAllProjects, getProjectTasks, getProjectsByStatus, createProject, updateProject, deleteProject } from "./services"
+import { getProjectById, getAllUserProjects, getProjectLogs,getAllProjects, getProjectTasks, getProjectsByStatus, createProject, updateProject, deleteProject, getProjectByUserId } from "./services"
 import { Context } from "hono"
 
 
@@ -74,20 +74,25 @@ export const DeletingProject = async (c: Context) => {
         return c.json({ error: error?.message }, 400)
     }
 }
-
 export const getUserProjects = async (c: Context) => {
-    try {  
-        const userId = Number(c.req.param('userId'))
-  
-        const projects = await getAllUserProjects(userId);
-        if (projects == null || projects.length == 0) {
-            return c.text("User not found", 404)
+    try {
+        const userId = Number(c.req.param('user_id'));  // Correct parameter name
+        console.log('userId', userId);
+
+        const projects = await getAllUserProjects(userId);  // Call the correct service function
+        console.log('projects', projects);
+        
+        if (!projects || projects.length === 0) {
+            return c.text("No projects found for this user", 404);
         }
+
         return c.json(projects, 200);
     } catch (error: any) {
-        return c.json({ error: error?.message }, 400)
+        console.error('Error fetching user projects:', error);
+        return c.json({ error: error?.message }, 400);
     }
-}
+};
+
 
 export const getProjectsTasks = async (c: Context) => {
     try{
