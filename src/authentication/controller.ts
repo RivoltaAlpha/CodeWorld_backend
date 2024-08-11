@@ -72,30 +72,33 @@ export const registerUser = async (c: Context) => {
   }
 };
 
+
+
 export const loginUser = async (c: Context) => {
   try {
     const user = await c.req.json();
-    console.log('Received user data for login:', user); // Debugging step
+    console.log('Received user data for login:', user);
 
     const foundUser = await loginAuthService(user);
-    console.log ('found User Password', foundUser?.password);
     if (!foundUser) return c.text("User not found😏", 404);
 
-    const isValid = await compare(user.password, foundUser?.password as string);
-    console.log ("isValid:", isValid);
+    console.log('Received password (plaintext):', user.password);
+    console.log('Stored hash (in database):', foundUser?.password);
+
+    const isValid = await compare(user.password, foundUser?.password);
+    console.log("isValid:", isValid);
 
     if (!isValid) {
       return c.json({ error: "Invalid credentials😏" }, 401);
     } else {
-      // create payload
       const payload = {
         sub: foundUser?.username,
         role: foundUser?.role,
         exp: Math.floor(Date.now() / 1000) + 60 * 180,
       };
-      let secret = process.env.JWT_SECRET as string;
+      const secret = process.env.JWT_SECRET as string;
       const token = await sign(payload, secret);
-      return c.json({ token, user: {user_id: foundUser?.user_id, role: foundUser?.role, username: foundUser?.username } }, 200); // return token and user details
+      return c.json({ token, user: { user_id: foundUser?.user_id, role: foundUser?.role, username: foundUser?.username } }, 200);
     }
   } catch (error: any) {
     console.error('Error during login:', error);
