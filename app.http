@@ -1,14 +1,16 @@
 ###
 GET  http://localhost:8000/user/2
+###
+GET  http://localhost:8000/users
 
 ###
 POST  http://localhost:8000/user
 Content-Type: application/json
 
 {
-  "username": "Kimberly",
-  "password": "kimshy",
-  "email": "kimjay@gmail.com",
+  "username": "Tyla",
+  "password": "password",
+  "email": "tylaperry@gmail.com",
   "role": "user",
   "image_url": "https://th.bing.com/th?id=OIP.JL2FYRdlJkZl34uduf3h5QHaHa&w=202&h=202&c=7&r=0&o=5&pid=1.7"
 }
@@ -18,9 +20,9 @@ POST  http://localhost:8000/auth/register
 Content-Type: application/json
 
 {
-  "username": "Trafalgar",
-  "password": "password",
-  "email": "traflaw@gmail.com",
+  "username": "DLaw",
+  "password": "lawtraf",
+  "email": "Dlaw@gmail.com",
   "role": "user",
   "image_url": "https://th.bing.com/th?id=OIP.JL2FYRdlJkZl34uduf3h5QHaHa&w=202&h=202&c=7&r=0&o=5&pid=1.7"
 }
@@ -30,7 +32,15 @@ POST  http://localhost:8000/auth/login
 Content-Type: application/json
 
 {
-  "username": "Trafalgar",
+  "username": "DLaw",
+  "password": "lawtraf"
+}
+###
+POST  http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
+  "username": "Tyla",
   "password": "password"
 }
 
@@ -50,7 +60,7 @@ POST  http://localhost:8000/project
 Content-Type: application/json
 
     {
-        "user_id": 2,
+        "user_id": 4,
         "project_name": "EduPlatform",
         "description": "online education system",
         "githubRepo": "https://github.com/EduTech/EduPlatform_frontend",
@@ -70,6 +80,9 @@ Content-Type: application/json
       "due_date": "2024-05-25",
       "completed": false
     }
+
+###
+GET http://localhost:8000/user-projects/3
 
 ###
 GET http://localhost:8000/projects/2
