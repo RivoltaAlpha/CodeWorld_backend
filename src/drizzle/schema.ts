@@ -38,8 +38,12 @@ export const users = pgTable("users", {
     });
 
   // project relationships
-  export const projectRelationsips = relations(projects, ({ many }) => ({
-    users: many(users),
+  export const projectRelationsips = relations(projects, ({ one,many }) => ({
+    users: one(users,
+      {
+        fields: [projects.user_id],
+        references: [users.user_id]
+      }),
     reminders: many(Reminders),
     tasks: many(tasks),
     workLogs: many(WorkLogs),
@@ -64,7 +68,16 @@ export const tasks = pgTable("tasks", {
   })
 
 //task relationships
-export const taskRelationsips = relations(tasks, ({ many }) => ({
+export const taskRelationsips = relations(tasks, ({ many,one }) => ({
+  reminders: many(Reminders),
+  project: one(projects, {
+    fields: [tasks.project_id],
+    references: [projects.projects_id]
+  }),
+  users: one(users, {
+    fields: [tasks.user_id],
+    references: [users.user_id]
+  }),
   workLogs: many(WorkLogs),
 }))
 
@@ -123,15 +136,6 @@ export const projectCategoryAssignments = pgTable ("projectCategoryAssignments",
   created_at: timestamp("created_at").defaultNow().notNull(),
   updated_at: timestamp("updated_at").defaultNow().notNull(),
 })
-
-//Relationships Between Tables:
-// Users can have multiple Projects.
-// Projects can have multiple Tasks.
-// Users can have multiple WorkLogs.
-// Projects can belong to multiple ProjectCategories through ProjectCategoryAssignments.
-// Users can have multiple Reminders.
-// Users have one set of UserPreferences.
-
 
 export type TIUser = typeof users.$inferInsert;
 export type TSUser = typeof users.$inferSelect;
