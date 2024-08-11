@@ -44,7 +44,7 @@ export async function deleteProject(id: number) {
   }
 
   export async function getAllUserProjects(userId: number) {
-    return await db.query.projects.findMany({
+    const projects = await db.query.projects.findMany({
         where: (fields, { eq }) => eq(fields.user_id, userId),  // Correctly filtering by user_id
         columns: {
             projects_id: true,
@@ -66,6 +66,7 @@ export async function deleteProject(id: number) {
             }
         }
     });
+    return projects
 }
 
 
