@@ -10,6 +10,7 @@ import "dotenv/config"
 import { projectRouter } from './projects/Prouter'
 import { userRouter } from './users/route';
 import { authRouter } from './authentication/routing'; 
+import { taskRouter } from './tasks/routing';
 
 const app = new Hono()
 // inbuilt middlewares
@@ -45,9 +46,10 @@ app.get("/timeout", async (c) => {
 });
 
 // services routes
+app.route('/auth', authRouter)
 app.route('/', projectRouter)
 app.route('/', userRouter)
-app.route('/auth', authRouter)
+app.route('/', taskRouter)
 
 const port = 3000
 

@@ -60,29 +60,52 @@ POST  http://localhost:8000/project
 Content-Type: application/json
 
     {
-        "user_id": 4,
-        "project_name": "EduPlatform",
-        "description": "online education system",
-        "githubRepo": "https://github.com/EduTech/EduPlatform_frontend",
-        "start_date": "2023-06-01",
-        "end_date": "2023-11-01"
+        "user_id": 11,
+        "project_name": "Codeworld",
+        "description": "Coding Projects Management system",
+        "githubRepo": "https://github.com/RivoltaAlpha/codeworld.git",
+        "start_date": "2023-08-01",
+        "end_date": "2023-09-10"
     }
 
 
 ###
-POST http://localhost:8000/project_id/task
+POST http://localhost:8000/create-task
 Content-Type: application/json
 
     {
-      "project_id": 1,
-      "task_name": "Initialization",
-      "description": "Create Repo",
-      "due_date": "2024-05-25",
+      "project_id": 32,
+      "user_id": 11,
+      "task_name": "Hono + Drizzle",
+      "description": "Backend",
+      "due_date": "2024-08-02",
       "completed": false
     }
 
 ###
-GET http://localhost:8000/user-projects/3
+PUT http://localhost:8000/update-task/3
+Content-Type: application/json
+
+    {
+      "project_id": 32,
+      "user_id": 11,
+      "task_name": "Hono + Drizzle",
+      "description": "Backend",
+      "due_date": "2024-08-02",
+      "completed": true
+    }
+
+###
+GET http://localhost:8000/tasks
+
+###
+GET http://localhost:8000/task/1
+
+###
+GET http://localhost:8000/tasks-project/32
+
+###
+GET http://localhost:8000/user-tasks/11
 
 ###
 GET http://localhost:8000/projects/2
