@@ -33,6 +33,7 @@ export const users = pgTable("users", {
       start_date: varchar("start_date", { length: 255 }),
       end_date: varchar("end_date", { length: 255 }),
       project_status: project_status(" project_status").default("Todo").notNull(),
+      project_duration: varchar("project_duration", { length: 255 }), 
       created_at: timestamp("created_at").defaultNow().notNull(),
       updated_at: timestamp("updated_at").defaultNow().notNull(),
     });
@@ -59,10 +60,12 @@ export const tasks = pgTable("tasks", {
     user_id: integer("user_id").notNull().references(() => users.user_id, { onDelete: "cascade" }),
     task_name: varchar("task_name", { length: 255 }).notNull(),
     description: text("description"),
+    start_date: varchar("start_date"),
     due_date: varchar("due_date"),
     task_status: task_status("task_status").default("New").notNull(),
     completed: boolean("completed").default(false),
     priority: integer("priority").notNull().default(0),
+    task_duration: varchar("task_duration", { length: 255 }),
     created_at: timestamp("created_at").defaultNow().notNull(),
     updated_at: timestamp("updated_at").defaultNow().notNull(),
   })
