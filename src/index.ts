@@ -11,6 +11,7 @@ import { projectRouter } from './projects/Prouter'
 import { userRouter } from './users/route';
 import { authRouter } from './authentication/routing'; 
 import { taskRouter } from './tasks/routing';
+import { categoryRouter } from './categories/route'; 
 
 const app = new Hono()
 // inbuilt middlewares
@@ -50,6 +51,7 @@ app.route('/auth', authRouter)
 app.route('/', projectRouter)
 app.route('/', userRouter)
 app.route('/', taskRouter)
+app.route('/', categoryRouter)
 
 const port = 3000
 
