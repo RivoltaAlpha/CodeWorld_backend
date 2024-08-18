@@ -35,6 +35,7 @@ export const users = pgTable("users", {
       project_status: project_status(" project_status").default("Todo").notNull(),
       project_duration: varchar("project_duration", { length: 255 }), 
       created_at: timestamp("created_at").defaultNow().notNull(),
+      category: varchar("category", { length: 255 }),
       updated_at: timestamp("updated_at").defaultNow().notNull(),
     });
 
@@ -47,8 +48,6 @@ export const users = pgTable("users", {
       }),
     reminders: many(Reminders),
     tasks: many(tasks),
-    workLogs: many(WorkLogs),
-    projectCategoryAssignments: many(projectCategoryAssignments),
   }))
 
   // tasks
@@ -80,25 +79,9 @@ export const taskRelationsips = relations(tasks, ({ many,one }) => ({
   users: one(users, {
     fields: [tasks.user_id],
     references: [users.user_id]
-  }),
-  workLogs: many(WorkLogs),
+  })
 }))
 
-export const WorkLogs = pgTable("work_logs", {
-  id: serial("id").primaryKey(),
-  task_id: integer("task_id").notNull().references(() => tasks.task_id, { onDelete: "cascade" }),
-  user_id: integer("user_id").notNull().references(() => users.user_id, { onDelete: "cascade" }),
-  log_date: timestamp("log_date").notNull(),
-  time_spent: varchar("time_spent"),
-  description: text("description"),
-  created_at: timestamp("created_at").defaultNow().notNull(),
-  updated_at: timestamp("updated_at").defaultNow().notNull(),
-})
-
-// logs relationships
-export const workLogRelationsips = relations(WorkLogs, ({ many }) => ({
-  reminders: many(Reminders),
-}))
 
 // Reminder
 export const Reminders = pgTable("reminders", {
@@ -113,7 +96,6 @@ export const Reminders = pgTable("reminders", {
 
 // reminder relationships
 export const reminderRelationsips = relations(Reminders, ({ many }) => ({
-  workLogs: many(WorkLogs),
   users: many(users),
 }))
 
@@ -127,18 +109,10 @@ export const categories = pgTable ("categories", {
 })
 
 // project category relationships
-export const projectCategoryRelationsips = relations(categories, ({ many }) => ({
-  projectCategoryAssignments: many(projectCategoryAssignments),
-}))
+export const CategoryRelationsips = relations(categories, ({ many }) => ({
+  projects: many(projects),
 
-// projectCategoryAssignments
-export const projectCategoryAssignments = pgTable ("projectCategoryAssignments", {
-  id: serial("id").primaryKey(),
-  project_id: integer("project_id").notNull().references(() => projects.projects_id, { onDelete: "cascade" }),
-  category_id: integer("category_id").notNull().references(() => categories.category_id, { onDelete: "cascade" }),
-  created_at: timestamp("created_at").defaultNow().notNull(),
-  updated_at: timestamp("updated_at").defaultNow().notNull(),
-})
+}))
 
 export type TIUser = typeof users.$inferInsert;
 export type TSUser = typeof users.$inferSelect;
@@ -146,10 +120,6 @@ export type TProject = typeof projects.$inferInsert;
 export type TProjectSelect = typeof projects.$inferSelect;
 export type TITask = typeof tasks.$inferInsert;
 export type TSTask = typeof tasks.$inferSelect;
-export type TWorkLog = typeof WorkLogs.$inferInsert;
-export type TWorkLogSelect = typeof WorkLogs.$inferSelect;
 export type TReminder = typeof Reminders.$inferInsert;
 export type TCategorySelect = typeof categories.$inferSelect;
 export type TCategory = typeof categories.$inferInsert;
-export type TProjectCategoryAssignmentSelect = typeof projectCategoryAssignments.$inferSelect;
-export type TProjectCategoryAssignment = typeof projectCategoryAssignments.$inferInsert;
