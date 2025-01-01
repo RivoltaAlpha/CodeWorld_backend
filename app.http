@@ -42,6 +42,15 @@ POST  http://localhost:8000/auth/login
 Content-Type: application/json
 
 {
+  "username": "Perky",
+  "password": "perky"
+}
+
+###
+POST  http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
   "username": "Tiff",
   "password": "password"
 }
@@ -62,8 +71,8 @@ POST  http://localhost:8000/project
 Content-Type: application/json
 
     {
-        "user_id": 3,
-        "project_name": "Azure",
+        "user_id": 1,
+        "project_name": "Azure 101",
         "description": "Coding Projects Management system",
         "githubRepo": "https://github.com/RivoltaAlpha/codeworld.git",
         "start_date": "2023-08-01",
